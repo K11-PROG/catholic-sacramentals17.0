@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Holy Water",
+        "category": "Water",
+        "description": "Water blessed by a priest for spiritual cleansing and protection."
+    },
+    {
+        "name": "Rosary",
+        "category": "Prayer",
+        "description": "A string of beads used to count prayers in devotion to Mary."
+    },
+    {
+        "name": "Scapular",
+        "category": "Clothing",
+        "description": "A sacramental garment signifying devotion and protection."
+    }
+]
