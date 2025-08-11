@@ -1,51 +1,37 @@
 import streamlit as st
+import json
+import os
 
-# Sample data embedded directly to avoid missing file errors
-SACRAMENTALS = [
-    {
-        "name": "Holy Water",
-        "category": "Blessed Objects",
-        "description": "Water blessed by a priest for the purpose of sanctification.",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Holy_water_font.jpg/320px-Holy_water_font.jpg"
-    },
-    {
-        "name": "Rosary",
-        "category": "Prayer Beads",
-        "description": "A string of beads used to keep count of prayers, especially the Hail Marys.",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Rosary.jpg/320px-Rosary.jpg"
-    },
-    {
-        "name": "Scapular",
-        "category": "Devotional Wear",
-        "description": "A sacramental worn as a sign of devotion and a reminder of the wearer's commitment to live a Christian life.",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/ScapularOLMountCarmel.jpg/320px-ScapularOLMountCarmel.jpg"
-    }
-]
+DATA_PATH = os.path.join("data", "sacramentals.json")
+
+def load_data():
+    with open(DATA_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def main():
     st.set_page_config(page_title="Catholic Sacramentals", layout="wide")
-    st.title("📿 Catholic Sacramentals Encyclopedia")
-    
-    # Sidebar filters
-    search = st.sidebar.text_input("Search sacramentals")
-    categories = sorted(set([item['category'] for item in SACRAMENTALS]))
-    selected_category = st.sidebar.selectbox("Filter by category", ["All"] + categories)
+    st.title("🙏 Catholic Sacramentals")
 
-    # Filter data
+    data = load_data()
+
+    # Search & filter
+    search = st.text_input("Search sacramentals:")
+    categories = sorted(set(item["category"] for item in data))
+    selected_category = st.selectbox("Filter by category", ["All"] + categories)
+
     filtered = [
-        s for s in SACRAMENTALS
-        if (search.lower() in s["name"].lower() or search.lower() in s["description"].lower())
-        and (selected_category == "All" or s["category"] == selected_category)
+        item for item in data
+        if (search.lower() in item["name"].lower() or search.lower() in item["description"].lower())
+        and (selected_category == "All" or item["category"] == selected_category)
     ]
 
-    # Display cards
+    # Display results
     cols = st.columns(3)
-    for idx, sacramental in enumerate(filtered):
+    for idx, item in enumerate(filtered):
         with cols[idx % 3]:
-            st.image(sacramental["image"], use_column_width=True)
-            st.subheader(sacramental["name"])
-            st.caption(sacramental["category"])
-            st.write(sacramental["description"])
+            st.image(item["image"], caption=item["name"], use_container_width=True)
+            st.write(item["description"])
+            st.caption(f"Category: {item['category']}")
 
 if __name__ == "__main__":
     main()
