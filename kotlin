@@ -1,0 +1,13 @@
+catholic-sacramentals/
+│
+├── app.py
+├── requirements.txt
+│
+├── data/
+│   └── sacramentals.json
+│
+└── public/
+    └── images/
+        ├── holy_water.jpg
+        ├── scapular.jpg
+        ├── rosary.jpg
